@@ -28,9 +28,21 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          destination="$(xcodebuild -project SideStoreSample.xcodeproj -scheme SideStoreSample -showdestinations 2>&1 \
-            | sed -n 's/.*{ platform:iOS Simulator, id:\([^,]*\), OS:[^,]*, name:.*}.*/platform=iOS Simulator,id=\1/p' \
-            | head -n 1)"
+          destinations_output="$(mktemp)"
+          trap 'rm -f "$destinations_output"' EXIT
+          xcodebuild -project SideStoreSample.xcodeproj -scheme SideStoreSample -showdestinations > "$destinations_output" 2>&1
+          cat "$destinations_output"
+          destination="$(awk '
+            /platform:iOS Simulator/ && /OS:/ && $0 !~ /Any iOS Simulator Device/ {
+              match($0, /id:[^,}]+/)
+              if (RSTART) {
+                identifier = substr($0, RSTART + 3, RLENGTH - 3)
+                gsub(/^ +| +$/, "", identifier)
+                print "platform=iOS Simulator,id=" identifier
+                exit
+              }
+            }
+          ' "$destinations_output")"
           if [[ -z "$destination" ]]; then
             echo "No eligible iOS Simulator destination was reported by xcodebuild." >&2
             exit 1
