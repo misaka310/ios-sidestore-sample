@@ -12,19 +12,19 @@ permissions:
 
 jobs:
   release:
-    uses: misaka310/ios-sidestore-deploy/.github/workflows/release.yml@bc210f5eb76af08a415488a8f0d4dde12c1d72af
+    uses: misaka310/ios-sidestore-deploy/.github/workflows/release.yml@bb34ee49283e01f82c28a9c2277d5ebbdf8b6c28
     with:
       app_repository: ${{ github.repository }}
       app_ref: ${{ github.ref }}
       foundation_repository: misaka310/ios-sidestore-deploy
-      foundation_ref: bc210f5eb76af08a415488a8f0d4dde12c1d72af
+      foundation_ref: bb34ee49283e01f82c28a9c2277d5ebbdf8b6c28
       release_tag: ${{ github.ref_name }}
       scheme: SideStoreSample
       project_path: SideStoreSample.xcodeproj
       configuration: Release
       app_name: SideStoreSample.app
-      app_version: "1.0.3"
-      build_number: "4"
+      app_version: "1.0.4"
+      build_number: "5"
       minimum_os_version: "17.0"
       release_name: SideStore Sample
       publish_source: true
