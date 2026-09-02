@@ -24,3 +24,4 @@ def test_xcode_project_declares_ios_sdk() -> None:
     content = PROJECT.read_text(encoding="utf-8")
 
     assert "SDKROOT = iphoneos;" in content
+    assert "ENABLE_TESTABILITY = YES;" in content
