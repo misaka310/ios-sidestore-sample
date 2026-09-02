@@ -70,7 +70,7 @@ jobs:
       project_path: SideStoreSample.xcodeproj
       configuration: Release
       app_name: SideStoreSample.app
-      app_version: "1.0"
-      build_number: "1"
+      app_version: "1.0.1"
+      build_number: "2"
       minimum_os_version: "17.0"
       artifact_name: sidestore-sample
