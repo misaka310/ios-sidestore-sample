@@ -34,7 +34,7 @@ This repository provides a minimal, deterministic SwiftUI app that proves the de
 
 - If Xcode cannot find the scheme or the build fails, inspect the workflow's toolchain/build log and correct the project configuration before retrying.
 - If the installed label is missing or empty, treat the build as invalid and do not use it for device evidence.
-- If a tag/version mismatch or release/source workflow fails, publish nothing from that failed run and fix the version, tag, or foundation ref before retrying.
+- If a tag/version mismatch or the release workflow's source job fails, publish nothing from that failed run and fix the version, tag, or foundation ref before retrying.
 - If GitHub Pages is not enabled, treat source publication as incomplete; do not claim the AltSource is hosted from an Actions artifact alone.
 - SideStore install, refresh, update, and pairing failures are recovered through the foundation repository's operations docs; they are not hidden by changing this app's acceptance criteria.
 

@@ -2,22 +2,19 @@ import json
 from pathlib import Path
 
 
-WORKFLOW = Path(__file__).parents[1] / ".github" / "workflows" / "publish-source-sample.yml"
+WORKFLOW = Path(__file__).parents[1] / ".github" / "workflows" / "release-sample.yml"
 SOURCE = Path(__file__).parents[1] / "source" / "source.json"
 
 
 def test_sample_source_publishes_after_a_release_to_a_stable_pages_url() -> None:
     content = WORKFLOW.read_text(encoding="utf-8")
 
-    assert "release:" in content
-    assert "types: [published]" in content
-    assert "permissions:" in content
+    assert "publish_source: true" in content
     assert "pages: write" in content
     assert "id-token: write" in content
-    assert "misaka310/ios-sidestore-deploy/.github/workflows/publish-source.yml@b041c61ba618f5354f95a2d3154a9fdc3691f3fa" in content
+    assert "misaka310/ios-sidestore-deploy/.github/workflows/release.yml@b575be80b482a6b7cd6918724da9d053b7618fef" in content
     assert "source_path: source/source.json" in content
     assert "source_url: https://misaka310.github.io/ios-sidestore-sample/source.json" in content
-    assert "release_tag: ${{ github.event.release.tag_name }}" in content
 
 
 def test_sample_source_template_is_a_safe_empty_source() -> None:
