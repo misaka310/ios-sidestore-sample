@@ -11,7 +11,7 @@ def test_sample_release_is_tagged_and_pins_the_foundation_release_workflow() -> 
     assert "tags:" in content
     assert "- v*" in content
     assert "contents: write" in content
-    assert "misaka310/ios-sidestore-deploy/.github/workflows/release.yml@b041c61" in content
+    assert "misaka310/ios-sidestore-deploy/.github/workflows/release.yml@b041c61ba618f5354f95a2d3154a9fdc3691f3fa" in content
     assert "app_ref: ${{ github.ref }}" in content
     assert "release_tag: ${{ github.ref_name }}" in content
     assert "app_version: \"1.0\"" in content

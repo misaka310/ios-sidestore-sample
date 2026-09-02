@@ -14,7 +14,7 @@ def test_sample_source_publishes_after_a_release_to_a_stable_pages_url() -> None
     assert "permissions:" in content
     assert "pages: write" in content
     assert "id-token: write" in content
-    assert "misaka310/ios-sidestore-deploy/.github/workflows/publish-source.yml@b041c61" in content
+    assert "misaka310/ios-sidestore-deploy/.github/workflows/publish-source.yml@b041c61ba618f5354f95a2d3154a9fdc3691f3fa" in content
     assert "source_path: source/source.json" in content
     assert "source_url: https://misaka310.github.io/ios-sidestore-sample/source.json" in content
     assert "release_tag: ${{ github.event.release.tag_name }}" in content
