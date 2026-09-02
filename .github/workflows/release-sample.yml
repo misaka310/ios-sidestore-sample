@@ -23,8 +23,8 @@ jobs:
       project_path: SideStoreSample.xcodeproj
       configuration: Release
       app_name: SideStoreSample.app
-      app_version: "1.0.1"
-      build_number: "2"
+      app_version: "1.0.2"
+      build_number: "3"
       minimum_os_version: "17.0"
       release_name: SideStore Sample
       publish_source: true
