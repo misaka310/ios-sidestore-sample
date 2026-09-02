@@ -1,0 +1,64 @@
+name: Build unsigned sample IPA
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: sample-build-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  native-tests:
+    name: Native XCTest
+    runs-on: macos-14
+    timeout-minutes: 30
+    steps:
+      - name: Check out sample app
+        uses: actions/checkout@v4
+
+      - name: Select an available iOS Simulator
+        id: simulator
+        shell: bash
+        run: |
+          set -euo pipefail
+          destination="$(xcodebuild -project SideStoreSample.xcodeproj -scheme SideStoreSample -showdestinations 2>&1 \
+            | sed -n 's/.*{ platform:iOS Simulator, id:\([^,]*\), OS:[^,]*, name:.*}.*/platform=iOS Simulator,id=\1/p' \
+            | head -n 1)"
+          if [[ -z "$destination" ]]; then
+            echo "No eligible iOS Simulator destination was reported by xcodebuild." >&2
+            exit 1
+          fi
+          echo "destination=$destination" >> "$GITHUB_OUTPUT"
+
+      - name: Run native XCTest target
+        run: >-
+          xcodebuild test
+          -project SideStoreSample.xcodeproj
+          -scheme SideStoreSample
+          -destination "${{ steps.simulator.outputs.destination }}"
+          CODE_SIGNING_ALLOWED=NO
+          CODE_SIGNING_REQUIRED=NO
+          CODE_SIGN_IDENTITY=""
+
+  unsigned-ipa:
+    name: Unsigned IPA
+    needs: native-tests
+    uses: misaka310/ios-sidestore-deploy/.github/workflows/reusable-build-unsigned-ipa.yml@651057fa1754c694d464709efed3c9806cafde07
+    with:
+      foundation_repository: misaka310/ios-sidestore-deploy
+      foundation_ref: 651057fa1754c694d464709efed3c9806cafde07
+      scheme: SideStoreSample
+      project_path: SideStoreSample.xcodeproj
+      configuration: Release
+      app_name: SideStoreSample.app
+      app_version: "1.0"
+      build_number: "1"
+      minimum_os_version: "17.0"
+      artifact_name: sidestore-sample
