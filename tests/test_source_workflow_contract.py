@@ -12,7 +12,7 @@ def test_sample_source_publishes_after_a_release_to_a_stable_pages_url() -> None
     assert "publish_source: true" in content
     assert "pages: write" in content
     assert "id-token: write" in content
-    assert "misaka310/ios-sidestore-deploy/.github/workflows/release.yml@b575be80b482a6b7cd6918724da9d053b7618fef" in content
+    assert "misaka310/ios-sidestore-deploy/.github/workflows/release.yml@bc210f5eb76af08a415488a8f0d4dde12c1d72af" in content
     assert "source_path: source/source.json" in content
     assert "source_url: https://misaka310.github.io/ios-sidestore-sample/source.json" in content
 

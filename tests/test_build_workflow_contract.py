@@ -14,8 +14,8 @@ def test_public_workflow_runs_native_tests_and_calls_pinned_foundation() -> None
     assert "awk" in content
     assert "No eligible iOS Simulator destination" in content
     assert "CODE_SIGNING_ALLOWED=NO" in content
-    assert "misaka310/ios-sidestore-deploy/.github/workflows/reusable-build-unsigned-ipa.yml@5467719c73d022ca6ab29ef31e44f085eb533038" in content
-    assert "foundation_ref: 5467719c73d022ca6ab29ef31e44f085eb533038" in content
+    assert "misaka310/ios-sidestore-deploy/.github/workflows/reusable-build-unsigned-ipa.yml@bc210f5eb76af08a415488a8f0d4dde12c1d72af" in content
+    assert "foundation_ref: bc210f5eb76af08a415488a8f0d4dde12c1d72af" in content
     assert "scheme: SideStoreSample" in content
     assert "artifact_name: sidestore-sample" in content
 
