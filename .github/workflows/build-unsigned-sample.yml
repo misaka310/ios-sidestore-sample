@@ -62,15 +62,15 @@ jobs:
   unsigned-ipa:
     name: Unsigned IPA
     needs: native-tests
-    uses: misaka310/ios-sidestore-deploy/.github/workflows/reusable-build-unsigned-ipa.yml@5467719c73d022ca6ab29ef31e44f085eb533038
+    uses: misaka310/ios-sidestore-deploy/.github/workflows/reusable-build-unsigned-ipa.yml@bc210f5eb76af08a415488a8f0d4dde12c1d72af
     with:
       foundation_repository: misaka310/ios-sidestore-deploy
-      foundation_ref: 5467719c73d022ca6ab29ef31e44f085eb533038
+      foundation_ref: bc210f5eb76af08a415488a8f0d4dde12c1d72af
       scheme: SideStoreSample
       project_path: SideStoreSample.xcodeproj
       configuration: Release
       app_name: SideStoreSample.app
-      app_version: "1.0.2"
-      build_number: "3"
+      app_version: "1.0.3"
+      build_number: "4"
       minimum_os_version: "17.0"
       artifact_name: sidestore-sample
