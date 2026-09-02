@@ -1,0 +1,29 @@
+name: Publish sample release
+
+on:
+  push:
+    tags:
+      - v*
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    uses: misaka310/ios-sidestore-deploy/.github/workflows/release.yml@b041c61
+    with:
+      app_repository: ${{ github.repository }}
+      app_ref: ${{ github.ref }}
+      foundation_repository: misaka310/ios-sidestore-deploy
+      foundation_ref: b041c61
+      release_tag: ${{ github.ref_name }}
+      scheme: SideStoreSample
+      project_path: SideStoreSample.xcodeproj
+      configuration: Release
+      app_name: SideStoreSample.app
+      app_version: "1.0"
+      build_number: "1"
+      minimum_os_version: "17.0"
+      release_name: SideStore Sample
+    permissions:
+      contents: write

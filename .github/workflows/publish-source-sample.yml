@@ -1,0 +1,29 @@
+name: Publish sample AltSource
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  publish-source:
+    uses: misaka310/ios-sidestore-deploy/.github/workflows/publish-source.yml@b041c61
+    with:
+      app_repository: ${{ github.repository }}
+      app_ref: main
+      foundation_repository: misaka310/ios-sidestore-deploy
+      foundation_ref: b041c61
+      release_tag: ${{ github.event.release.tag_name }}
+      source_path: source/source.json
+      source_url: https://misaka310.github.io/ios-sidestore-sample/source.json
+      app_name: SideStore Sample
+      developer_name: SideStore Deployment Foundation
+      app_description: A minimal proof app for the SideStore deployment path.
+    permissions:
+      contents: read
+      pages: write
+      id-token: write

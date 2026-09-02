@@ -25,13 +25,17 @@ This repository provides a minimal, deterministic SwiftUI app that proves the de
 
 1. The maintainer opens or clones this repository on a Windows machine and changes only the app source/version as needed.
 2. The deployment foundation's reusable workflow builds the `SideStoreSample` scheme for `iphoneos` with signing disabled.
-3. The user installs the published IPA through the documented SideStore flow.
-4. The user launches the app and verifies the on-screen version/build label.
+3. A `v*` tag calls the pinned foundation release workflow, which rebuilds the tag and publishes the validated IPA to a GitHub Release.
+4. The release-published workflow generates and validates the AltSource, then deploys it to the repository's stable GitHub Pages URL.
+5. The user adds that source to SideStore and installs the published IPA through the documented SideStore flow.
+6. The user launches the app and verifies the on-screen version/build label.
 
 ### エラー時
 
 - If Xcode cannot find the scheme or the build fails, inspect the workflow's toolchain/build log and correct the project configuration before retrying.
 - If the installed label is missing or empty, treat the build as invalid and do not use it for device evidence.
+- If a tag/version mismatch or release/source workflow fails, publish nothing from that failed run and fix the version, tag, or foundation ref before retrying.
+- If GitHub Pages is not enabled, treat source publication as incomplete; do not claim the AltSource is hosted from an Actions artifact alone.
 - SideStore install, refresh, update, and pairing failures are recovered through the foundation repository's operations docs; they are not hidden by changing this app's acceptance criteria.
 
 ## 4. 制約条件

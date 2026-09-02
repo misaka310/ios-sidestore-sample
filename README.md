@@ -28,10 +28,15 @@ Install Xcode on macOS when you want to open or run the project locally. For the
 
 Use the `SideStoreSample` scheme to launch the proof app. The app displays its bundle version and build number. The public build workflow is defined in the [iOS SideStore Deployment Foundation](https://github.com/misaka310/ios-sidestore-deploy) and is called from this repository's CI workflow.
 
+Tags matching `v*` call the pinned foundation release workflow. The workflow rebuilds the exact tag, publishes the unsigned IPA and manifest to a GitHub Release, and verifies the released IPA hash. The current sample release contract is version `1.0`, build `1`; update both the workflow inputs and the app's bundle version/build together before creating the next tag.
+
+After a Release is published, the pinned foundation source workflow generates the AltSource and deploys it to GitHub Pages at [source.json](https://misaka310.github.io/ios-sidestore-sample/source.json). GitHub Pages must be enabled with the workflow source in the repository settings before the first release. This URL is the source URL to add in SideStore; the workflow retains prior versions by reading the previously published source.
+
 ## Requirements
 
 - Xcode and iOS Simulator for local macOS development.
 - A GitHub account for hosted workflow runs.
+- GitHub Pages enabled for the repository's Actions workflow when publishing the AltSource.
 - A physical iPhone and SideStore only for the separate device-evidence gates.
 
 ## Limitations
