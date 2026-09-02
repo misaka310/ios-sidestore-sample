@@ -1,0 +1,19 @@
+.DS_Store
+DerivedData/
+build/
+*.xcuserstate
+xcuserdata/
+
+# Apple/device secrets and signing material
+*.mobiledevicepairing
+*.mobileprovision
+*.p12
+*.p8
+*.cer
+*.pem
+*.key
+
+# Local environment/secrets
+.env
+.env.*
+!.env.example
