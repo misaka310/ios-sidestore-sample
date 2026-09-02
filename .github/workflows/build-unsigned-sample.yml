@@ -1,0 +1,76 @@
+name: Build unsigned sample IPA
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: sample-build-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  native-tests:
+    name: Native XCTest
+    runs-on: macos-14
+    timeout-minutes: 30
+    steps:
+      - name: Check out sample app
+        uses: actions/checkout@v4
+
+      - name: Select an available iOS Simulator
+        id: simulator
+        shell: bash
+        run: |
+          set -euo pipefail
+          destinations_output="$(mktemp)"
+          trap 'rm -f "$destinations_output"' EXIT
+          xcodebuild -project SideStoreSample.xcodeproj -scheme SideStoreSample -showdestinations > "$destinations_output" 2>&1
+          cat "$destinations_output"
+          destination="$(awk '
+            /platform:iOS Simulator/ && /OS:/ && $0 !~ /Any iOS Simulator Device/ {
+              match($0, /id:[^,}]+/)
+              if (RSTART) {
+                identifier = substr($0, RSTART + 3, RLENGTH - 3)
+                gsub(/^ +| +$/, "", identifier)
+                print "platform=iOS Simulator,id=" identifier
+                exit
+              }
+            }
+          ' "$destinations_output")"
+          if [[ -z "$destination" ]]; then
+            echo "No eligible iOS Simulator destination was reported by xcodebuild." >&2
+            exit 1
+          fi
+          echo "destination=$destination" >> "$GITHUB_OUTPUT"
+
+      - name: Run native XCTest target
+        run: >-
+          xcodebuild test
+          -project SideStoreSample.xcodeproj
+          -scheme SideStoreSample
+          -destination "${{ steps.simulator.outputs.destination }}"
+          CODE_SIGNING_ALLOWED=NO
+          CODE_SIGNING_REQUIRED=NO
+          CODE_SIGN_IDENTITY=""
+
+  unsigned-ipa:
+    name: Unsigned IPA
+    needs: native-tests
+    uses: misaka310/ios-sidestore-deploy/.github/workflows/reusable-build-unsigned-ipa.yml@5467719c73d022ca6ab29ef31e44f085eb533038
+    with:
+      foundation_repository: misaka310/ios-sidestore-deploy
+      foundation_ref: 5467719c73d022ca6ab29ef31e44f085eb533038
+      scheme: SideStoreSample
+      project_path: SideStoreSample.xcodeproj
+      configuration: Release
+      app_name: SideStoreSample.app
+      app_version: "1.0"
+      build_number: "1"
+      minimum_os_version: "17.0"
+      artifact_name: sidestore-sample
