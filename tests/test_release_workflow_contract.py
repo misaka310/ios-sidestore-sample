@@ -14,8 +14,8 @@ def test_sample_release_is_tagged_and_pins_the_foundation_release_workflow() -> 
     assert "misaka310/ios-sidestore-deploy/.github/workflows/release.yml@b041c61ba618f5354f95a2d3154a9fdc3691f3fa" in content
     assert "app_ref: ${{ github.ref }}" in content
     assert "release_tag: ${{ github.ref_name }}" in content
-    assert "app_version: \"1.0\"" in content
-    assert "build_number: \"1\"" in content
+    assert "app_version: \"1.0.1\"" in content
+    assert "build_number: \"2\"" in content
     assert "scheme: SideStoreSample" in content
     assert "project_path: SideStoreSample.xcodeproj" in content
 
